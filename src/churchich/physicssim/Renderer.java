@@ -125,6 +125,7 @@ public class Renderer extends JPanel {
                 handleWallCollisions(obj);
             }
         }
+        HandleObjectCollisions.handleAllCollisions(objects);
     }
 
     // Handle wall collisions
@@ -132,7 +133,7 @@ public class Renderer extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        // For balls (you can make this more generic later)
+        // For circles
         if (obj instanceof Circle) {
             Circle circle = (Circle) obj;
             int diameter = circle.getDiameter();
@@ -140,7 +141,7 @@ public class Renderer extends JPanel {
             // Left/Right walls
             if (circle.getX() < 0) {
                 circle.setPosition(0, circle.getY());
-                circle.getVelocity().setVx(-circle.getVelocity().getVx() * 0.8);  // Bounce with energy loss
+                circle.getVelocity().setVx(-circle.getVelocity().getVx() * 0.8);
             } else if (circle.getX() + diameter > width) {
                 circle.setPosition(width - diameter, circle.getY());
                 circle.getVelocity().setVx(-circle.getVelocity().getVx() * 0.8);
@@ -156,6 +157,34 @@ public class Renderer extends JPanel {
 
                 // Add friction when on ground
                 circle.getVelocity().setVx(circle.getVelocity().getVx() * 0.9);
+            }
+        }
+
+        // For rectangles
+        if (obj instanceof Rectangle) {
+            Rectangle rect = (Rectangle) obj;
+            int rectWidth = rect.getWidth();
+            int rectHeight = rect.getHeight();
+
+            // Left/Right walls
+            if (rect.getX() < 0) {
+                rect.setPosition(0, rect.getY());
+                rect.getVelocity().setVx(-rect.getVelocity().getVx() * 0.8);
+            } else if (rect.getX() + rectWidth > width) {
+                rect.setPosition(width - rectWidth, rect.getY());
+                rect.getVelocity().setVx(-rect.getVelocity().getVx() * 0.8);
+            }
+
+            // Top/Bottom walls
+            if (rect.getY() < 0) {
+                rect.setPosition(rect.getX(), 0);
+                rect.getVelocity().setVy(-rect.getVelocity().getVy() * 0.8);
+            } else if (rect.getY() + rectHeight > height) {
+                rect.setPosition(rect.getX(), height - rectHeight);
+                rect.getVelocity().setVy(-rect.getVelocity().getVy() * 0.8);
+
+                // Add friction when on ground
+                rect.getVelocity().setVx(rect.getVelocity().getVx() * 0.9);
             }
         }
     }

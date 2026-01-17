@@ -25,6 +25,7 @@ public class Main implements Runnable {
         rend.addObject(new Circle(100, 100, 50, Color.RED));
         rend.addObject(new Circle(300, 200, 60, Color.BLUE));
         rend.addObject(new Circle(500, 150, 40, Color.GREEN));
+        rend.addObject(new Rectangle(200, 400, 150, 100, Color.YELLOW));
 
         frame.add(rend);
 
