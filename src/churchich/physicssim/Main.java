@@ -25,7 +25,6 @@ public class Main implements Runnable {
         rend.addObject(new Circle(100, 100, 50, Color.RED));
         rend.addObject(new Circle(300, 200, 60, Color.BLUE));
         rend.addObject(new Circle(500, 150, 40, Color.GREEN));
-        rend.addObject(new Rectangle(200, 400, 150, 100, Color.YELLOW));
 
         frame.add(rend);
 
@@ -36,7 +35,7 @@ public class Main implements Runnable {
     public void run() {
         while (!Thread.interrupted()) {
             rend.updatePhysics();  // Update physics each frame
-            rend.repaint();
+            rend.render();
             try {
                 Thread.sleep(16); // ~60 FPS
             } catch (InterruptedException e) {
@@ -46,7 +45,7 @@ public class Main implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main() {
         Main main = new Main();
         new Thread(main).start();
     }

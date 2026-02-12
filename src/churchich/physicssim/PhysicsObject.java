@@ -3,8 +3,8 @@ package churchich.physicssim;
 import java.awt.*;
 
 public abstract class PhysicsObject {
-    protected int x;
-    protected int y;
+    protected double x;
+    protected double y;
     protected Velocity velocity;
 
     public PhysicsObject() {
@@ -12,15 +12,16 @@ public abstract class PhysicsObject {
     }
 
     public abstract void draw(Graphics g);
-    public abstract boolean contains(int mouseX, int mouseY);
+    public abstract boolean contains(double mouseX, double mouseY);
 
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
+    public double getX() { return x; }
+    public double getY() { return y; }
+
 
     public Velocity getVelocity() {
         return velocity;

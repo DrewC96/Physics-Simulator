@@ -8,15 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Renderer extends JPanel {
-    private JFrame frame;
-    private List<PhysicsObject> objects;
+    private final List<PhysicsObject> objects;
     private PhysicsObject draggedObject = null;
-    private int dragOffsetX;
-    private int dragOffsetY;
+    private double dragOffsetX;
+    private double dragOffsetY;
 
     // Mouse Velocity Tracking
-    private int lastMouseX = 0;
-    private int lastMouseY = 0;
+    private double lastMouseX = 0;
+    private double lastMouseY = 0;
     private long lastMouseTime = 0;
     private double mouseVelocityX = 0;
     private double mouseVelocityY = 0;
@@ -27,7 +26,6 @@ public class Renderer extends JPanel {
     private static final double VELOCITY_SCALE = 0.5; // how much mouse velocity affects object
 
     public Renderer(JFrame frame) {
-        this.frame = frame;
         this.objects = new ArrayList<>();
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
@@ -134,9 +132,8 @@ public class Renderer extends JPanel {
         int height = getHeight();
 
         // For circles
-        if (obj instanceof Circle) {
-            Circle circle = (Circle) obj;
-            int diameter = circle.getDiameter();
+        if (obj instanceof Circle circle) {
+            double diameter = circle.getDiameter();
 
             // Left/Right walls
             if (circle.getX() < 0) {
@@ -161,8 +158,7 @@ public class Renderer extends JPanel {
         }
 
         // For rectangles
-        if (obj instanceof Rectangle) {
-            Rectangle rect = (Rectangle) obj;
+        if (obj instanceof Rectangle rect) {
             int rectWidth = rect.getWidth();
             int rectHeight = rect.getHeight();
 
@@ -206,10 +202,9 @@ public class Renderer extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.YELLOW);
         for (PhysicsObject obj : objects) {
-            if (obj instanceof Circle) {
-                Circle circle = (Circle) obj;
-                int centerX = circle.getCenterX();
-                int centerY = circle.getCenterY();
+            if (obj instanceof Circle circle) {
+                int centerX = (int) circle.getCenterX();
+                int centerY = (int) circle.getCenterY();
                 int endX = centerX + (int) (circle.getVelocity().getVx() * 2);
                 int endY = centerY + (int) (circle.getVelocity().getVy() * 2);
                 g2d.drawLine(centerX, centerY, endX, endY);

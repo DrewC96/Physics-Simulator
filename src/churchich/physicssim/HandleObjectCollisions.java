@@ -61,10 +61,10 @@ public class HandleObjectCollisions {
      */
     private static boolean handleCircleCollision(Circle circle1, Circle circle2) {
         // Get centers
-        int cx1 = circle1.getCenterX();
-        int cy1 = circle1.getCenterY();
-        int cx2 = circle2.getCenterX();
-        int cy2 = circle2.getCenterY();
+        double cx1 = circle1.getCenterX();
+        double cy1 = circle1.getCenterY();
+        double cx2 = circle2.getCenterX();
+        double cy2 = circle2.getCenterY();
 
         // Calculate distance between centers
         double dx = cx2 - cx1;
@@ -77,7 +77,7 @@ public class HandleObjectCollisions {
         // Check if circles are colliding
         if (distance < minDistance && distance > 0) {
             // Circles are overlapping - resolve collision
-            resolveCollision(circle1, circle2, dx, dy, distance, minDistance);
+            resolveCircleCollisions(circle1, circle2, dx, dy, distance, minDistance);
             return true; // Collision occurred
         }
 
@@ -87,9 +87,9 @@ public class HandleObjectCollisions {
     /**
      * Resolve collision using conservation of momentum and energy
      */
-    private static void resolveCollision(Circle circle1, Circle circle2,
-                                         double dx, double dy,
-                                         double distance, double minDistance) {
+    private static void resolveCircleCollisions(Circle circle1, Circle circle2,
+                                                double dx, double dy,
+                                                double distance, double minDistance) {
         // Step 1: Separate the circles so they're no longer overlapping
         separateCircles(circle1, circle2, dx, dy, distance, minDistance);
 
@@ -169,20 +169,23 @@ public class HandleObjectCollisions {
                 circle2.getX() + (int) (nx * separation2),
                 circle2.getY() + (int) (ny * separation2)
         );
+
+        System.out.println("Separation1: " + separation1);
+        System.out.println("Separation2: " + separation2);
     }
 
     /**
      * Debug: Print momentum before and after collision
      */
-    public static void printMomentumDebug(Circle circle1, Circle circle2, String when) {
-        double p1x = Mass.calculateMassCircle(circle1.getDiameter()) * circle1.getVelocity().getVx();
-        double p1y = Mass.calculateMassCircle(circle1.getDiameter()) * circle1.getVelocity().getVy();
-        double p2x = Mass.calculateMassCircle(circle2.getDiameter()) * circle2.getVelocity().getVx();
-        double p2y = Mass.calculateMassCircle(circle2.getDiameter()) * circle2.getVelocity().getVy();
-
-        double totalPx = p1x + p2x;
-        double totalPy = p1y + p2y;
-
-        System.out.println(when + " Total Momentum: (" + totalPx + ", " + totalPy + ")");
-    }
+//    public static void printMomentumDebug(Circle circle1, Circle circle2, String when) {
+//        double p1x = Mass.calculateMassCircle(circle1.getDiameter()) * circle1.getVelocity().getVx();
+//        double p1y = Mass.calculateMassCircle(circle1.getDiameter()) * circle1.getVelocity().getVy();
+//        double p2x = Mass.calculateMassCircle(circle2.getDiameter()) * circle2.getVelocity().getVx();
+//        double p2y = Mass.calculateMassCircle(circle2.getDiameter()) * circle2.getVelocity().getVy();
+//
+//        double totalPx = p1x + p2x;
+//        double totalPy = p1y + p2y;
+//
+//        System.out.println(when + " Total Momentum: (" + totalPx + ", " + totalPy + ")");
+//    }
 }
