@@ -2,12 +2,12 @@ package churchich.physicssim;
 
 import java.awt.*;
 
-public class Rectangle extends PhysicsObject {
+public class Rect extends PhysicsObject {
     private final int width;
     private final int height;
     private final Color color;
 
-    public Rectangle(double x, double y, double width, double height, Color color) {
+    public Rect(double x, double y, double width, double height, Color color) {
         this.x = x;
         this.y = y;
         this.width = (int) width;

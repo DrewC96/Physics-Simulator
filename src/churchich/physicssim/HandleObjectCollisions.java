@@ -160,14 +160,14 @@ public class HandleObjectCollisions {
 
         // Move circle1 away from circle2
         circle1.setPosition(
-                circle1.getX() - (int) (nx * separation1),
-                circle1.getY() - (int) (ny * separation1)
+                circle1.getX() - (nx * separation1),
+                circle1.getY() - (ny * separation1)
         );
 
         // Move circle2 away from circle1
         circle2.setPosition(
-                circle2.getX() + (int) (nx * separation2),
-                circle2.getY() + (int) (ny * separation2)
+                circle2.getX() + (nx * separation2),
+                circle2.getY() + (ny * separation2)
         );
 
         System.out.println("Separation1: " + separation1);

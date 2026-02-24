@@ -45,7 +45,7 @@ public class Main implements Runnable {
         }
     }
 
-    public static void main() {
+    static void main(String[] args) {
         Main main = new Main();
         new Thread(main).start();
     }

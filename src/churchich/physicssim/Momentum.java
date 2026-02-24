@@ -11,12 +11,12 @@ public class Momentum {
                 * circle.getVelocity().getVy();
     }
 
-    public static double calculateXMomentumRectangle(Rectangle rectangle) {
+    public static double calculateXMomentumRectangle(Rect rectangle) {
         return Mass.calculateMassRectangle(rectangle.getWidth(), rectangle.getHeight())
                 * rectangle.getVelocity().getVx();
     }
 
-    public static double calculateYMomentumRectangle(Rectangle rectangle) {
+    public static double calculateYMomentumRectangle(Rect rectangle) {
         return Mass.calculateMassRectangle(rectangle.getWidth(), rectangle.getHeight())
                 * rectangle.getVelocity().getVy();
     }

@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Renderer extends JPanel {
     private final List<PhysicsObject> objects;
@@ -26,7 +27,7 @@ public class Renderer extends JPanel {
     private static final double VELOCITY_SCALE = 0.5; // how much mouse velocity affects object
 
     public Renderer(JFrame frame) {
-        this.objects = new ArrayList<>();
+        this.objects = new CopyOnWriteArrayList<>();
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
 
@@ -158,7 +159,7 @@ public class Renderer extends JPanel {
         }
 
         // For rectangles
-        if (obj instanceof Rectangle rect) {
+        if (obj instanceof Rect rect) {
             int rectWidth = rect.getWidth();
             int rectHeight = rect.getHeight();
 

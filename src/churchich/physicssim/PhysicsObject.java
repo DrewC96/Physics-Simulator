@@ -29,8 +29,8 @@ public abstract class PhysicsObject {
 
     // Update position based on velocity
     public void updatePosition() {
-        x += (int) velocity.getVx();
-        y += (int) velocity.getVy();
+        x +=  velocity.getVx();
+        y +=  velocity.getVy();
     }
 
     // Apply physics (gravity, friction, etc.)
