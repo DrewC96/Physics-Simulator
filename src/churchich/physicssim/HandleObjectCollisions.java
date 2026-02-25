@@ -1,55 +1,27 @@
 package churchich.physicssim;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HandleObjectCollisions {
 
     // Coefficient of restitution (bounciness)
-    private static final double RESTITUTION = 0.8;
-
-    // Collision cooldown tracking
-    private static final Map<String, Long> collisionCooldowns = new HashMap<>();
-    private static final long COOLDOWN_MS = 50; // 100ms between collisions for same pair
+    private static final double RESTITUTION = 1.5;
 
     /**
      * Check and resolve all collisions between objects
      */
     public static void handleAllCollisions(List<PhysicsObject> objects) {
-        long currentTime = System.currentTimeMillis();
-
         // Check every pair of objects
         for (int i = 0; i < objects.size(); i++) {
             for (int j = i + 1; j < objects.size(); j++) {
                 PhysicsObject obj1 = objects.get(i);
                 PhysicsObject obj2 = objects.get(j);
 
-                // Create unique key for this pair
-                String pairKey = i + "-" + j;
-
-                // Check if collision is on cooldown
-                Long lastCollision = collisionCooldowns.get(pairKey);
-                if (lastCollision != null && currentTime - lastCollision < COOLDOWN_MS) {
-                    continue; // Skip this pair, still on cooldown
-                }
-
                 // Handle circle-circle collisions
                 if (obj1 instanceof Circle && obj2 instanceof Circle) {
-                    boolean collided = handleCircleCollision((Circle) obj1, (Circle) obj2);
-
-                    // If collision occurred, add cooldown
-                    if (collided) {
-                        collisionCooldowns.put(pairKey, currentTime);
-                    }
-                }
+                    handleCircleCollision((Circle) obj1, (Circle) obj2);                }
             }
         }
-
-        // Clean up old cooldowns (optional, prevents memory leak)
-        collisionCooldowns.entrySet().removeIf(entry ->
-                currentTime - entry.getValue() > COOLDOWN_MS * 2
-        );
     }
 
     // TODO : fix collisions so that circles can not go through each other
@@ -59,29 +31,32 @@ public class HandleObjectCollisions {
      * Check if two circles are colliding and resolve the collision
      * Returns true if collision occurred
      */
-    private static boolean handleCircleCollision(Circle circle1, Circle circle2) {
-        // Get centers
+    private static void handleCircleCollision(Circle circle1, Circle circle2) {
+        // Cap speed before collision check to prevent tunneling
+        capSpeed(circle1);
+        capSpeed(circle2);
+
+
         double cx1 = circle1.getCenterX();
         double cy1 = circle1.getCenterY();
         double cx2 = circle2.getCenterX();
         double cy2 = circle2.getCenterY();
 
-        // Calculate distance between centers
         double dx = cx2 - cx1;
         double dy = cy2 - cy1;
         double distance = Math.sqrt(dx * dx + dy * dy);
-
-        // Calculate minimum distance for collision (sum of radii)
         double minDistance = (circle1.getDiameter() + circle2.getDiameter()) / 2.0;
 
-        // Check if circles are colliding
-        if (distance < minDistance && distance > 0) {
-            // Circles are overlapping - resolve collision
+
+        if (distance < minDistance) {
+            if (distance == 0) {
+                dx = 1;
+                dy = 0;
+                distance = 0.001;
+            }
             resolveCircleCollisions(circle1, circle2, dx, dy, distance, minDistance);
-            return true; // Collision occurred
         }
 
-        return false; // No collision
     }
 
     /**
@@ -90,49 +65,58 @@ public class HandleObjectCollisions {
     private static void resolveCircleCollisions(Circle circle1, Circle circle2,
                                                 double dx, double dy,
                                                 double distance, double minDistance) {
-        // Step 1: Separate the circles so they're no longer overlapping
+        // Step 1: Calculate normal BEFORE separation
+        double nx = dx / distance;
+        double ny = dy / distance;
+
+        // Step 2: Separate
         separateCircles(circle1, circle2, dx, dy, distance, minDistance);
 
-        // Step 2: Calculate masses
+        double newDx = circle2.getCenterX() - circle1.getCenterX();
+        double newDy = circle2.getCenterY() - circle1.getCenterY();
+        double newDistance = Math.sqrt(newDx * newDx + newDy * newDy);
+
+        // Step 4: Masses and velocities
         double mass1 = Mass.calculateMassCircle(circle1.getDiameter());
         double mass2 = Mass.calculateMassCircle(circle2.getDiameter());
 
-        // Step 3: Get velocities
+        System.out.println("mass1: " + mass1);
+        System.out.println("mass2: " + mass2);
+
+
         double v1x = circle1.getVelocity().getVx();
         double v1y = circle1.getVelocity().getVy();
         double v2x = circle2.getVelocity().getVx();
         double v2y = circle2.getVelocity().getVy();
 
-        // Step 4: Calculate collision normal (direction from circle1 to circle2)
-        double nx = dx / distance;  // Normalized x
-        double ny = dy / distance;  // Normalized y
+        // Step 5: Relative velocity along normal
+        double dvn = (v2x - v1x) * nx + (v2y - v1y) * ny;
 
-        // Step 5: Calculate relative velocity
-        double dvx = v2x - v1x;
-        double dvy = v2y - v1y;
-
-        // Step 6: Calculate relative velocity along collision normal
-        double dvn = dvx * nx + dvy * ny;
-
-        // Step 7: Don't resolve if circles are moving apart
+        // Step 6: Skip if moving apart
         if (dvn >= 0) {
             return;
         }
 
-        // Step 8: Calculate impulse (using conservation of momentum)
-        // Formula: J = -(1 + e) * dvn / (1/m1 + 1/m2)
-        double impulse = -(1 + RESTITUTION) * dvn / (1 / mass1 + 1 / mass2);
+        System.out.println("dvn: " + dvn);
 
-        // Step 9: Apply impulse to both circles
-        // Circle 1 gets impulse in one direction
-        double impulse1x = impulse * nx / mass1;
-        double impulse1y = impulse * ny / mass1;
-        circle1.getVelocity().addVelocity(impulse1x, impulse1y);
+        // Step 7: Apply impulse
+        double impulse = -(1 + RESTITUTION) * dvn / (1.0 / mass1 + 1.0 / mass2);
 
-        // Circle 2 gets impulse in opposite direction
-        double impulse2x = -impulse * nx / mass2;
-        double impulse2y = -impulse * ny / mass2;
-        circle2.getVelocity().addVelocity(impulse2x, impulse2y);
+        circle1.getVelocity().addVelocity( impulse * nx / mass1,  impulse * ny / mass1);
+        circle2.getVelocity().addVelocity(-impulse * nx / mass2, -impulse * ny / mass2);
+
+        double speed1 = Math.sqrt(Math.pow(circle1.getVelocity().getVx(), 2) + Math.pow(circle1.getVelocity().getVy(), 2));
+        double speed2 = Math.sqrt(Math.pow(circle2.getVelocity().getVx(), 2) + Math.pow(circle2.getVelocity().getVy(), 2));
+        System.out.println("post-impulse speed1: " + speed1 + " speed2: " + speed2);
+
+        // Step 8: Guarantee separation - project out any remaining approach velocity
+        double newDvn = (circle2.getVelocity().getVx() - circle1.getVelocity().getVx()) * nx +
+                (circle2.getVelocity().getVy() - circle1.getVelocity().getVy()) * ny;
+        if (newDvn < 0) {
+            // Still approaching after impulse - force them apart
+            circle1.getVelocity().addVelocity(newDvn * nx / 2, newDvn * ny / 2);
+            circle2.getVelocity().addVelocity(-newDvn * nx / 2, -newDvn * ny / 2);
+        }
     }
 
     /**
@@ -142,7 +126,7 @@ public class HandleObjectCollisions {
                                         double dx, double dy,
                                         double distance, double minDistance) {
         // Calculate overlap amount
-        double overlap = minDistance - distance;
+        double overlap = (minDistance - distance) + 5.0;
 
         // Calculate separation direction (normalized)
         double nx = dx / distance;
@@ -169,23 +153,17 @@ public class HandleObjectCollisions {
                 circle2.getX() + (nx * separation2),
                 circle2.getY() + (ny * separation2)
         );
-
-        System.out.println("Separation1: " + separation1);
-        System.out.println("Separation2: " + separation2);
     }
 
-    /**
-     * Debug: Print momentum before and after collision
-     */
-//    public static void printMomentumDebug(Circle circle1, Circle circle2, String when) {
-//        double p1x = Mass.calculateMassCircle(circle1.getDiameter()) * circle1.getVelocity().getVx();
-//        double p1y = Mass.calculateMassCircle(circle1.getDiameter()) * circle1.getVelocity().getVy();
-//        double p2x = Mass.calculateMassCircle(circle2.getDiameter()) * circle2.getVelocity().getVx();
-//        double p2y = Mass.calculateMassCircle(circle2.getDiameter()) * circle2.getVelocity().getVy();
-//
-//        double totalPx = p1x + p2x;
-//        double totalPy = p1y + p2y;
-//
-//        System.out.println(when + " Total Momentum: (" + totalPx + ", " + totalPy + ")");
-//    }
+    private static void capSpeed(Circle circle) {
+        double speed = Math.sqrt(Math.pow(circle.getVelocity().getVx(), 2) +
+                Math.pow(circle.getVelocity().getVy(), 2));
+        if (speed > 20.0) {
+            double scale = 20.0 / speed;
+            circle.getVelocity().setVelocity(
+                    circle.getVelocity().getVx() * scale,
+                    circle.getVelocity().getVy() * scale
+            );
+        }
+    }
 }

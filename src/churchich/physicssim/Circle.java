@@ -14,6 +14,7 @@ public class Circle extends PhysicsObject {
         this.color = color;
     }
 
+
     @Override
     public void draw(Graphics g) {
         g.setColor(color);

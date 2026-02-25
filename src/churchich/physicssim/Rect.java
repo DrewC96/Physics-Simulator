@@ -16,6 +16,11 @@ public class Rect extends PhysicsObject {
     }
 
     @Override
+    public double getDiameter() {
+        return 0;
+    }
+
+    @Override
     public void draw(Graphics g) {
         g.setColor(color);
         g.fillRect((int) x,(int) y, width, height);

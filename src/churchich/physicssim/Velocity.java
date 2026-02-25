@@ -39,11 +39,6 @@ public class Velocity {
         return Math.sqrt(vx * vx + vy * vy);
     }
 
-    public void applyDamping(double damping) {
-        this.vx *= damping;
-        this.vy *= damping;
-    }
-
     public void reset() {
         this.vx = 0;
         this.vy = 0;

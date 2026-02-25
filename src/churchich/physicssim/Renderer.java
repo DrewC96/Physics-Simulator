@@ -22,7 +22,7 @@ public class Renderer extends JPanel {
     private double mouseVelocityY = 0;
 
     // Physics Constants
-    private static final double GRAVITY = 0.5;
+    private static final double GRAVITY = 1.5;
     private static final double FRICTION = 0.98;
     private static final double VELOCITY_SCALE = 0.5; // how much mouse velocity affects object
 
@@ -112,15 +112,9 @@ public class Renderer extends JPanel {
     // Update all physics
     public void updatePhysics() {
         for (PhysicsObject obj : objects) {
-            // Don't apply physics to dragged object
             if (obj != draggedObject) {
-                // Apply gravity and friction
                 obj.applyPhysics(GRAVITY, FRICTION);
-
-                // Update position based on velocity
                 obj.updatePosition();
-
-                // Bounce off walls
                 handleWallCollisions(obj);
             }
         }

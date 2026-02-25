@@ -6,6 +6,7 @@ public abstract class PhysicsObject {
     protected double x;
     protected double y;
     protected Velocity velocity;
+    public abstract double getDiameter();
 
     public PhysicsObject() {
         this.velocity = new Velocity();
@@ -29,16 +30,17 @@ public abstract class PhysicsObject {
 
     // Update position based on velocity
     public void updatePosition() {
-        x +=  velocity.getVx();
-        y +=  velocity.getVy();
+        x += velocity.getVx();
+        y += velocity.getVy();
     }
 
     // Apply physics (gravity, friction, etc.)
     public void applyPhysics(double gravity, double friction) {
-        // Apply gravity
         velocity.addVelocity(0, gravity);
+        velocity.setVelocity(velocity.getVx() * friction, velocity.getVy());
 
-        // Apply friction/air resistance
-        velocity.applyDamping(friction);
+        // Kill tiny velocities to prevent micro-vibration
+        if (Math.abs(velocity.getVx()) < 0.01) velocity.setVelocity(0, velocity.getVy());
+        if (Math.abs(velocity.getVy()) < 0.01) velocity.setVelocity(velocity.getVx(), 0);
     }
 }
