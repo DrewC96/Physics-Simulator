@@ -18,34 +18,11 @@ public class Main implements Runnable {
     public volatile boolean isSimulating = false;
 
     public void addComponentToPane(Container pane) {
-        // Main menu card
-        JPanel mainCard = new JPanel();
-        mainCard.add(new JLabel("Welcome to my Physics Simulator!"));
-        JButton goToMomentum = new JButton("Go to Momentum Simulator");
-        goToMomentum.addActionListener(_ -> {
-            showScreen(MOMENTUM_SCREEN);
-            isSimulating = true;
-        });        mainCard.add(goToMomentum);
-
-        // Renderer card
         rend = new Renderer(frame);
-        rend.addObject(new Circle(100, 100, 50, Color.RED));
-        rend.addObject(new Circle(300, 200, 60, Color.BLUE));
-        rend.addObject(new Circle(500, 150, 40, Color.GREEN));
 
-        JPanel momentumCard = new JPanel(new BorderLayout());
-        JButton backButton = new JButton("Back to Main");
-        backButton.addActionListener(_ -> {
-            showScreen(MAIN_SCREEN);
-            isSimulating = false;
-        });
-        momentumCard.add(backButton, BorderLayout.NORTH);
-        momentumCard.add(rend, BorderLayout.CENTER); // <-- Renderer lives inside the card
-
-        // CardLayout panel
         cards = new JPanel(new CardLayout());
-        cards.add(mainCard, MAIN_SCREEN);
-        cards.add(momentumCard, MOMENTUM_SCREEN);
+        cards.add(new MainCard(this), MAIN_SCREEN);
+        cards.add(new MomentumCard(this), MOMENTUM_SCREEN);
 
         pane.add(cards, BorderLayout.CENTER);
     }
