@@ -61,9 +61,9 @@ public class Main implements Runnable {
     @Override
     public void run() {
         while (!Thread.interrupted()) {
-            if (rend != null) {
-                rend.updatePhysics();
-                rend.render();
+            if (rend != null && isSimulating) {
+                    rend.updatePhysics();
+                    rend.render();
             }
             try {
                 Thread.sleep(16);
