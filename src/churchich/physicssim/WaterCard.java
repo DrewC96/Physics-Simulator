@@ -3,20 +3,17 @@ package churchich.physicssim;
 import javax.swing.*;
 import java.awt.*;
 
-public class MomentumCard extends JPanel {
+public class WaterCard extends JPanel{
     public final Renderer rend;
 
-    public MomentumCard(Main app) {
+    public WaterCard(Main app) {
         setLayout(new BorderLayout());
 
         rend = new Renderer(app.frame);
-        rend.addObject(new Circle(100, 100, 50, Color.RED));
-        rend.addObject(new Circle(300, 200, 60, Color.BLUE));
-        rend.addObject(new Circle(500, 150, 40, Color.GREEN));
-        app.setActiveRenderer(rend); // <-- tell Main to use this renderer
+        app.setActiveRenderer(rend);
 
         JButton backButton = new JButton("Back to Main");
-        backButton.addActionListener(_ -> {
+            backButton.addActionListener(_ -> {
             app.showScreen(Main.MAIN_SCREEN);
             app.isSimulating = false;
         });
@@ -24,5 +21,4 @@ public class MomentumCard extends JPanel {
         add(backButton, BorderLayout.NORTH);
         add(rend, BorderLayout.CENTER);
     }
-
 }

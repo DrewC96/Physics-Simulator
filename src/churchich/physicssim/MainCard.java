@@ -9,9 +9,18 @@ public class MainCard extends JPanel {
 
         JButton goToMomentum = new JButton("Go to Momentum Simulator");
         goToMomentum.addActionListener(e -> {
+            app.rend = app.momentumCard.rend;
             app.showScreen(Main.MOMENTUM_SCREEN);
             app.isSimulating = true;
         });
         add(goToMomentum);
+
+        JButton goToWater = new JButton("Go to Water Simulator");
+        goToWater.addActionListener(_ -> {
+            app.rend = app.waterCard.rend;
+            app.showScreen(Main.WATER_SCREEN);
+            app.isSimulating = true;
+        });
+        add(goToWater);
     }
 }

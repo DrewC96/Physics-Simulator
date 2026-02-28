@@ -9,20 +9,32 @@ public class Main implements Runnable {
     public static final String MAIN_SCREEN = "Physics Simulator " + VERSION;
     public static final Dimension SCREEN_SIZE = new Dimension(800, 600);
     public static final String MOMENTUM_SCREEN = "Momentum Simulator " + VERSION;
+    public static final String WATER_SCREEN = "Water Simulator " + VERSION;
 
     JPanel cards;
     public JFrame frame;
     public Renderer rend;
 
+    //make new cards
+    MomentumCard momentumCard;
+    WaterCard waterCard;
+
     // controls whether a pane is running
     public volatile boolean isSimulating = false;
 
+    // manage which renderer is rendering for when switching panes
+    public void setActiveRenderer(Renderer r) {
+        rend = r;
+    }
+
     public void addComponentToPane(Container pane) {
-        rend = new Renderer(frame);
+        momentumCard = new MomentumCard(this);
+        waterCard = new WaterCard(this);
 
         cards = new JPanel(new CardLayout());
         cards.add(new MainCard(this), MAIN_SCREEN);
-        cards.add(new MomentumCard(this), MOMENTUM_SCREEN);
+        cards.add(momentumCard, MOMENTUM_SCREEN);
+        cards.add(waterCard, WATER_SCREEN);
 
         pane.add(cards, BorderLayout.CENTER);
     }
@@ -38,6 +50,7 @@ public class Main implements Runnable {
         frame.setTitle(MAIN_SCREEN);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
         addComponentToPane(frame.getContentPane()); // call directly on this instance
 
@@ -48,8 +61,10 @@ public class Main implements Runnable {
     @Override
     public void run() {
         while (!Thread.interrupted()) {
-            rend.updatePhysics();
-            rend.render();
+            if (rend != null) {
+                rend.updatePhysics();
+                rend.render();
+            }
             try {
                 Thread.sleep(16);
             } catch (InterruptedException e) {
