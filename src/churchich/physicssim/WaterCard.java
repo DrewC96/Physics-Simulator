@@ -10,6 +10,10 @@ public class WaterCard extends JPanel{
         setLayout(new BorderLayout());
 
         rend = new Renderer(app.frame);
+
+        WaterGrid wg = new WaterGrid(100,100);
+        wg.initPool();
+
         app.setActiveRenderer(rend);
 
         JButton backButton = new JButton("Back to Main");

@@ -192,18 +192,5 @@ public class Renderer extends JPanel {
         for (PhysicsObject obj : objects) {
             obj.draw(g);
         }
-
-        // Optional: Draw velocity vectors for debugging
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.YELLOW);
-        for (PhysicsObject obj : objects) {
-            if (obj instanceof Circle circle) {
-                int centerX = (int) circle.getCenterX();
-                int centerY = (int) circle.getCenterY();
-                int endX = centerX + (int) (circle.getVelocity().getVx() * 2);
-                int endY = centerY + (int) (circle.getVelocity().getVy() * 2);
-                g2d.drawLine(centerX, centerY, endX, endY);
-            }
-        }
     }
 }

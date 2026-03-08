@@ -10,9 +10,11 @@ public class MomentumCard extends JPanel {
         setLayout(new BorderLayout());
 
         rend = new Renderer(app.frame);
+
         rend.addObject(new Circle(100, 100, 50, Color.RED));
         rend.addObject(new Circle(300, 200, 60, Color.BLUE));
         rend.addObject(new Circle(500, 150, 40, Color.GREEN));
+
         app.setActiveRenderer(rend); // <-- tell Main to use this renderer
 
         JButton backButton = new JButton("Back to Main");
