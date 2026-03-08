@@ -4,11 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Renderer extends JPanel {
+public class Renderer extends JPanel implements SimRenderer {
     private final List<PhysicsObject> objects;
     private PhysicsObject draggedObject = null;
     private double dragOffsetX;
@@ -26,7 +25,7 @@ public class Renderer extends JPanel {
     private static final double FRICTION = 0.98;
     private static final double VELOCITY_SCALE = 0.5; // how much mouse velocity affects object
 
-    public Renderer(JFrame frame) {
+    public Renderer() {
         this.objects = new CopyOnWriteArrayList<>();
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
@@ -99,10 +98,6 @@ public class Renderer extends JPanel {
 
     public void addObject(PhysicsObject obj) {
         objects.add(obj);
-    }
-
-    public void removeObject(PhysicsObject obj) {
-        objects.remove(obj);
     }
 
     public List<PhysicsObject> getObjects() {

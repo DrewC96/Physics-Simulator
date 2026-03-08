@@ -13,7 +13,7 @@ public class Main implements Runnable {
 
     JPanel cards;
     public JFrame frame;
-    public Renderer rend;
+    public SimRenderer rend;
 
     //make new cards
     MomentumCard momentumCard;
@@ -23,9 +23,7 @@ public class Main implements Runnable {
     public volatile boolean isSimulating = false;
 
     // manage which renderer is rendering for when switching panes
-    public void setActiveRenderer(Renderer r) {
-        rend = r;
-    }
+    public void setActiveRenderer(SimRenderer r) { rend = r; }
 
     public void addComponentToPane(Container pane) {
         momentumCard = new MomentumCard(this);

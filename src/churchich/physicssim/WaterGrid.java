@@ -1,11 +1,11 @@
 package churchich.physicssim;
 
 public class WaterGrid {
-    private final int rows;
-    private final int cols;
+    final int rows;
+    final int cols;
 
     // core simulation arrays
-    private double[][] height; // water surface height
+    double[][] height; // water surface height
     private double[][] velocity; // vertical velocity of each cell
     private double[][] terrain; // static terrain/ground height
 

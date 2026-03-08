@@ -9,7 +9,7 @@ public class MomentumCard extends JPanel {
     public MomentumCard(Main app) {
         setLayout(new BorderLayout());
 
-        rend = new Renderer(app.frame);
+        rend = new Renderer();
 
         rend.addObject(new Circle(100, 100, 50, Color.RED));
         rend.addObject(new Circle(300, 200, 60, Color.BLUE));

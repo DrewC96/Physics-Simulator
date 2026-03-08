@@ -4,14 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WaterCard extends JPanel{
-    public final Renderer rend;
+    public final WaterRenderer rend;
 
     public WaterCard(Main app) {
         setLayout(new BorderLayout());
-
-        rend = new Renderer(app.frame);
-
         WaterGrid wg = new WaterGrid(100,100);
+
+        rend = new WaterRenderer(wg);
+
         wg.initPool();
 
         app.setActiveRenderer(rend);
