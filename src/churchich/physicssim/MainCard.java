@@ -8,7 +8,7 @@ public class MainCard extends JPanel {
         add(new JLabel("Welcome to my Physics Simulator!"));
 
         JButton goToMomentum = new JButton("Go to Momentum Simulator");
-        goToMomentum.addActionListener(e -> {
+        goToMomentum.addActionListener(_ -> {
             app.rend = app.momentumCard.rend;
             app.showScreen(Main.MOMENTUM_SCREEN);
             app.isSimulating = true;

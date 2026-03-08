@@ -8,7 +8,7 @@ public class WaterCard extends JPanel{
 
     public WaterCard(Main app) {
         setLayout(new BorderLayout());
-        WaterGrid wg = new WaterGrid(100,100);
+        WaterGrid wg = new WaterGrid(200,200);
 
         rend = new WaterRenderer(wg);
 
