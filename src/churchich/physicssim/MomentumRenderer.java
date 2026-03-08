@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Renderer extends JPanel implements SimRenderer {
+public class MomentumRenderer extends JPanel implements SimRenderer {
     private final List<PhysicsObject> objects;
     private PhysicsObject draggedObject = null;
     private double dragOffsetX;
@@ -25,7 +25,7 @@ public class Renderer extends JPanel implements SimRenderer {
     private static final double FRICTION = 0.98;
     private static final double VELOCITY_SCALE = 0.5; // how much mouse velocity affects object
 
-    public Renderer() {
+    public MomentumRenderer() {
         this.objects = new CopyOnWriteArrayList<>();
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);

@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MomentumCard extends JPanel {
-    public final Renderer rend;
+    public final MomentumRenderer rend;
 
     public MomentumCard(Main app) {
         setLayout(new BorderLayout());
 
-        rend = new Renderer();
+        rend = new MomentumRenderer();
 
         rend.addObject(new Circle(100, 100, 50, Color.RED));
         rend.addObject(new Circle(300, 200, 60, Color.BLUE));
