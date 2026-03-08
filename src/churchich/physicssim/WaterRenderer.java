@@ -21,7 +21,7 @@ public class WaterRenderer extends JPanel implements SimRenderer {
 
         for (int r = 0; r < grid.rows; r++) {
             for (int c = 0; c < grid.cols; c++) {
-                g.setColor(getWaterColor(grid.height[r][c]));
+                g.setColor(getWaterColor(grid.depth[r][c]));
                 g.fillRect(c * cellW, r * cellH, cellW, cellH);
             }
         }

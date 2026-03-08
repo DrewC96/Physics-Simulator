@@ -5,7 +5,7 @@ public class WaterGrid {
     final int cols;
 
     // core simulation arrays
-    double[][] height; // water surface height
+    double[][] depth; // water surface height
     private double[][] velocity; // vertical velocity of each cell
     private double[][] terrain; // static terrain/ground height
 
@@ -19,7 +19,7 @@ public class WaterGrid {
         this.rows = rows;
         this.cols = cols;
 
-        height = new double[rows][cols];
+        depth = new double[rows][cols];
         velocity = new double[rows][cols];
         terrain = new double[rows][cols];
         fluxRight = new double[rows][cols];
@@ -29,11 +29,16 @@ public class WaterGrid {
     }
 
     public void initPool() {
-        int cr = rows / 2, cc = cols / 2;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                double dist = Math.hypot(r - cr, c - cc);
-                height[r][c] = (dist < rows / 6.0) ? 3.0 : 0.05;
+                int zone = (int)(r / (rows * 0.2));
+                switch (zone) {
+                    case 0 -> depth[r][c] = 1.0;
+                    case 1 -> depth[r][c] = 2.0;
+                    case 2 -> depth[r][c] = 3.0;
+                    case 3 -> depth[r][c] = 4.0;
+                    default -> depth[r][c] = 5.0;
+                }
             }
         }
     }
