@@ -147,6 +147,27 @@ public class MomentumRenderer extends JPanel implements SimRenderer {
             }
         }
 
+        if (obj instanceof Rect rect) {
+            // Left/Right walls
+            if (rect.getX() < 0) {
+                rect.setPosition(0, rect.getY());
+                rect.getVelocity().setVx(-rect.getVelocity().getVx() * 0.8);
+            } else if (rect.getX() + rect.width > width) {
+                rect.setPosition(width - rect.width, rect.getY());
+                rect.getVelocity().setVx(-rect.getVelocity().getVx() * 0.8);
+            }
+
+            // Top/Bottom walls
+            if (rect.getY() < 0) {
+                rect.setPosition(rect.getX(), 0);
+                rect.getVelocity().setVy(-rect.getVelocity().getVy() * 0.8);
+            } else if (rect.getY() + rect.height > height) {
+                rect.setPosition(rect.getX(), height - rect.height);
+                rect.getVelocity().setVy(-rect.getVelocity().getVy() * 0.8);
+                rect.getVelocity().setVx(rect.getVelocity().getVx() * 0.9);
+            }
+        }
+
     }
 
     public void render() {

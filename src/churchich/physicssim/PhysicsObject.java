@@ -6,6 +6,13 @@ public abstract class PhysicsObject {
     protected double x;
     protected double y;
     protected Velocity velocity;
+
+    public abstract boolean overlaps(Collidable other);
+
+    public abstract double getMass();
+
+    public abstract void resolveOverlap(Collidable other);
+
     public abstract double getDiameter();
 
     public PhysicsObject() {

@@ -2,7 +2,7 @@ package churchich.physicssim;
 
 import java.awt.*;
 
-public class Circle extends PhysicsObject {
+public class Circle extends PhysicsObject implements Collidable {
     private final int diameter;
     private final Color color;
 
@@ -31,6 +31,43 @@ public class Circle extends PhysicsObject {
 
         return distance <= (double) diameter / 2;
     }
+
+    @Override
+    public boolean overlaps(Collidable other) {
+        if (other instanceof Circle c) {
+            double distance = Math.hypot(c.getCenterX() - getCenterX(), c.getCenterY() - getCenterY());
+            return distance < (getDiameter() + c.getDiameter()) / 2.0;
+        }
+        if (other instanceof Rect r) {
+            // delegate to Rect's implementation to avoid duplicating the logic
+            return r.overlaps(this);
+        }
+        return false;
+    }
+
+    @Override
+    public void resolveOverlap(Collidable other) {
+        if (other instanceof Circle c) {
+            double dx = c.getCenterX() - getCenterX();
+            double dy = c.getCenterY() - getCenterY();
+            double distance = Math.hypot(dx, dy);
+            if (distance == 0) { dx = 1; distance = 0.001; }
+
+            double overlap = (getDiameter() + c.getDiameter()) / 2.0 - distance;
+            double nx = dx / distance;
+            double ny = dy / distance;
+
+            setPosition(getX() - nx * overlap / 2, getY() - ny * overlap / 2);
+            c.setPosition(c.getX() + nx * overlap / 2, c.getY() + ny * overlap / 2);
+        }
+        if (other instanceof Rect r) {
+            r.resolveOverlap(this);
+        }
+    }
+
+    @Override
+    public double getMass() { return Mass.calculateMassCircle(getDiameter()); }
+
 
     public double getDiameter() {
         return diameter;
