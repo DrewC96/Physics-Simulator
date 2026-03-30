@@ -42,6 +42,10 @@ public class Main implements Runnable {
         cl.show(cards, screenName);
     }
 
+    public void resetCard(String screenName) {
+        
+    }
+
     public Main() {
         frame = new JFrame();
         frame.setSize(SCREEN_SIZE);

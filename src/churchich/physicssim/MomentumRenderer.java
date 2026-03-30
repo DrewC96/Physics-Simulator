@@ -147,32 +147,6 @@ public class MomentumRenderer extends JPanel implements SimRenderer {
             }
         }
 
-        // For rectangles
-        if (obj instanceof Rect rect) {
-            int rectWidth = rect.getWidth();
-            int rectHeight = rect.getHeight();
-
-            // Left/Right walls
-            if (rect.getX() < 0) {
-                rect.setPosition(0, rect.getY());
-                rect.getVelocity().setVx(-rect.getVelocity().getVx() * 0.8);
-            } else if (rect.getX() + rectWidth > width) {
-                rect.setPosition(width - rectWidth, rect.getY());
-                rect.getVelocity().setVx(-rect.getVelocity().getVx() * 0.8);
-            }
-
-            // Top/Bottom walls
-            if (rect.getY() < 0) {
-                rect.setPosition(rect.getX(), 0);
-                rect.getVelocity().setVy(-rect.getVelocity().getVy() * 0.8);
-            } else if (rect.getY() + rectHeight > height) {
-                rect.setPosition(rect.getX(), height - rectHeight);
-                rect.getVelocity().setVy(-rect.getVelocity().getVy() * 0.8);
-
-                // Add friction when on ground
-                rect.getVelocity().setVx(rect.getVelocity().getVx() * 0.9);
-            }
-        }
     }
 
     public void render() {

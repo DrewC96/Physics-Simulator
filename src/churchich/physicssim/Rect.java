@@ -3,27 +3,23 @@ package churchich.physicssim;
 import java.awt.*;
 
 public class Rect extends PhysicsObject {
-    private final int width;
-    private final int height;
-    private final Color color;
+    public final int width;
+    public final int height;
+    public final Color color;
 
-    public Rect(double x, double y, double width, double height, Color color) {
+    public Rect(int x, int y, int width, int height, Color color) {
+        super();
         this.x = x;
         this.y = y;
-        this.width = (int) width;
-        this.height = (int) height;
+        this.width = width;
+        this.height = height;
         this.color = color;
-    }
-
-    @Override
-    public double getDiameter() {
-        return 0;
     }
 
     @Override
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillRect((int) x,(int) y, width, height);
+        g.fillRect((int) x, (int) y, width, height);
     }
 
     @Override
@@ -32,6 +28,8 @@ public class Rect extends PhysicsObject {
                 mouseY >= y && mouseY <= y + height;
     }
 
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
+    @Override
+    public double getDiameter() {
+        return Math.hypot(width, height);
+    }
 }

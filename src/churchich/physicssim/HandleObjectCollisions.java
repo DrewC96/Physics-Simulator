@@ -59,6 +59,10 @@ public class HandleObjectCollisions {
 
     }
 
+    public static void handleRectCollisions(Rect rect1, Rect rect2) {
+
+    }
+
     /**
      * Resolve collision using conservation of momentum and energy
      */
