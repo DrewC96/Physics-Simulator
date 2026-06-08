@@ -15,7 +15,7 @@ public class Main implements Runnable {
     public JFrame frame;
     public SimRenderer rend;
 
-    //make new cards
+    // make new cards
     MomentumCard momentumCard;
     WaterCard waterCard;
 
@@ -46,6 +46,7 @@ public class Main implements Runnable {
         
     }
 
+    // initializes JFrame and sets properties
     public Main() {
         frame = new JFrame();
         frame.setSize(SCREEN_SIZE);
